@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rotina ENEM</title>
+<meta name="description" content="Rotina de estudos de 5h por dia para o ENEM, com foco em Engenharia Química">
+<meta name="theme-color" content="#F3F0E8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12141B" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rotina ENEM">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+
+    --bg: #F3F0E8;
+    --panel: #FFFFFF;
+    --panel-2: #ECE8DE;
+    --line: #DDD8CB;
+    --ink: #1B1D26;
+    --ink-dim: #565968;
+    --ink-faint: #666978;
+    --amber: #A35F00;
+    --amber-ink: #FFFFFF;
+    --amber-soft: rgba(163, 95, 0, 0.10);
+    --amber-edge: rgba(163, 95, 0, 0.40);
+
+    --c-estudo: #3A6EA5;
+    --c-refeicao: #A0622C;
+    --c-treino: #3B7F52;
+    --c-colegio: #6F5CA6;
+    --c-pessoal: #6D7080;
+    --c-pausa: #7E8190;
+    --c-sono: #56629A;
+
+    --s-mat: #3A6EA5;
+    --s-fis: #A0622C;
+    --s-qui: #3B7F52;
+    --s-sim: #6F5CA6;
+    --s-lin: #6D7080;
+    --s-pri: #A35F00;
+    --s-bio: #2F8A8F;
+    --s-hum: #B04E6B;
+
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, Menlo, monospace;
+    --font-display: 'IBM Plex Sans Condensed', 'Arial Narrow', -apple-system, 'Segoe UI', sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #12141B;
+      --panel: #1B1E28;
+      --panel-2: #20232E;
+      --line: #2A2E3A;
+      --ink: #EDEAE1;
+      --ink-dim: #9A9CA8;
+      --ink-faint: #7D808D;
+      --amber: #E8A33D;
+      --amber-ink: #12141B;
+      --amber-soft: rgba(232, 163, 61, 0.10);
+      --amber-edge: rgba(232, 163, 61, 0.35);
+
+      --c-estudo: #7C9CBF;
+      --c-refeicao: #C48A5C;
+      --c-treino: #7FA88A;
+      --c-colegio: #9587B5;
+      --c-pessoal: #8B8D99;
+      --c-pausa: #6A6D7A;
+      --c-sono: #6B7593;
+
+      --s-mat: #7C9CBF;
+      --s-fis: #C48A5C;
+      --s-qui: #7FA88A;
+      --s-sim: #9587B5;
+      --s-lin: #8B8D99;
+      --s-pri: #E8A33D;
+    --s-bio: #6FB5B8;
+    --s-hum: #D48AA0;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #12141B;
+    --panel: #1B1E28;
+    --panel-2: #20232E;
+    --line: #2A2E3A;
+    --ink: #EDEAE1;
+    --ink-dim: #9A9CA8;
+    --ink-faint: #7D808D;
+    --amber: #E8A33D;
+    --amber-ink: #12141B;
+    --amber-soft: rgba(232, 163, 61, 0.10);
+    --amber-edge: rgba(232, 163, 61, 0.35);
+
+    --c-estudo: #7C9CBF;
+    --c-refeicao: #C48A5C;
+    --c-treino: #7FA88A;
+    --c-colegio: #9587B5;
+    --c-pessoal: #8B8D99;
+    --c-pausa: #6A6D7A;
+    --c-sono: #6B7593;
+
+    --s-mat: #7C9CBF;
+    --s-fis: #C48A5C;
+    --s-qui: #7FA88A;
+    --s-sim: #9587B5;
+    --s-lin: #8B8D99;
+    --s-pri: #E8A33D;
+    --s-bio: #6FB5B8;
+    --s-hum: #D48AA0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+    background: var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    padding: 22px 14px 50px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .container { max-width: 600px; margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .board-clock {
+    font-family: var(--font-mono);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 6px 10px;
+    text-align: right;
+    line-height: 1.3;
+    min-width: 78px;
+  }
+
+  #day-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    font-weight: 600;
+  }
+
+  #clock {
+    display: block;
+    font-size: 15px;
+    color: var(--amber);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tabs { display: flex; gap: 2px; margin-bottom: 16px; }
+
+  .tab-btn {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    padding: 10px 2px;
+    cursor: pointer;
+  }
+  .tab-btn:first-child { border-radius: 5px 0 0 5px; }
+  .tab-btn:last-child { border-radius: 0 5px 5px 0; }
+  .tab-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 1px; }
+  .tab-btn.active { background: var(--amber); color: var(--amber-ink); border-color: var(--amber); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .daychips { display: flex; gap: 6px; margin-bottom: 10px; }
+
+  .chip {
+    flex: 1;
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    padding: 9px 0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .chip:focus-visible { outline: 2px solid var(--amber); outline-offset: 1px; }
+  .chip.active { color: var(--amber); border-color: var(--amber); background: var(--amber-soft); }
+  .chip.today::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  .caption { font-size: 12.5px; color: var(--ink-dim); margin-bottom: 16px; line-height: 1.45; min-height: 18px; }
+  .caption b { color: var(--ink); font-weight: 600; }
+
+  .schedule { display: flex; flex-direction: column; gap: 5px; margin-bottom: 18px; }
+
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border-left: 3px solid var(--cat-color, var(--ink-faint));
+    border-radius: 4px;
+    padding: 9px 10px;
+  }
+
+  .row .time {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    flex: 0 0 90px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row .activity { flex: 1; font-size: 13.5px; color: var(--ink); }
+
+  .row .note {
+    display: block;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    font-style: italic;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  .row .tag {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--cat-color, var(--ink-faint));
+    border: 1px solid var(--cat-color, var(--ink-faint));
+    border-radius: 3px;
+    padding: 2px 5px;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .cat-estudo { --cat-color: var(--c-estudo); }
+  .cat-refeicao { --cat-color: var(--c-refeicao); }
+  .cat-treino { --cat-color: var(--c-treino); }
+  .cat-colegio { --cat-color: var(--c-colegio); }
+  .cat-pessoal { --cat-color: var(--c-pessoal); }
+  .cat-pausa { --cat-color: var(--c-pausa); }
+  .cat-sono { --cat-color: var(--c-sono); }
+
+  .row.is-now {
+    background: var(--amber-soft);
+    border-left-color: var(--amber);
+    box-shadow: 0 0 0 1px var(--amber-edge) inset;
+  }
+  .row.is-now::before {
+    content: "AGORA";
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: var(--amber);
+    color: var(--amber-ink);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .row.is-now .tag { color: var(--amber-ink); background: var(--amber); border-color: var(--amber); }
+
+  h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    margin: 20px 0 8px;
+    font-weight: 600;
+  }
+  h3.first { margin-top: 4px; }
+
+  .legend { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 5px; overflow: hidden; font-size: 12.5px; }
+  .legend th { background: var(--panel-2); color: var(--ink-dim); font-family: var(--font-mono); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; padding: 7px 9px; text-align: left; }
+  .legend td { padding: 8px 9px; border-top: 1px solid var(--line); color: var(--ink); vertical-align: top; }
+  .legend td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .legend tr.sel td { color: var(--amber); font-weight: 600; }
+  .legend tr.sel { background: var(--amber-soft); }
+
+  .dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    margin-right: 8px;
+    background: var(--dot, var(--ink-faint));
+  }
+
+  .bar { display: flex; gap: 2px; height: 14px; border-radius: 4px; overflow: hidden; margin: 4px 0 12px; }
+  .bar span { display: block; height: 100%; }
+
+  .footnote { font-size: 11.5px; color: var(--ink-faint); margin-top: 8px; line-height: 1.5; }
+
+  .facts { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px 2px; list-style: none; }
+  .facts li { font-size: 13px; color: var(--ink-dim); margin-bottom: 12px; line-height: 1.5; }
+  .facts li b { color: var(--ink); font-weight: 600; }
+
+  .tips { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px 16px 4px; margin-top: 22px; }
+  .tips h2 { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em; font-size: 13.5px; color: var(--amber); margin-bottom: 12px; font-weight: 700; }
+  .tips ul { list-style: none; }
+  .tips li { font-size: 13px; color: var(--ink-dim); padding-left: 16px; position: relative; margin-bottom: 12px; line-height: 1.5; }
+  .tips li::before { content: "—"; position: absolute; left: 0; color: var(--ink-faint); }
+  .tips li b { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="eyebrow">ENEM · ENG. QUÍMICA · 4 BLOCOS · 75 MIN</div>
+  <div class="title-row">
+    <h1>Rotina ENEM</h1>
+    <div class="board-clock">
+      <span id="day-label">—</span>
+      <span id="clock">00:00:00</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="Seções da rotina">
+    <button class="tab-btn" role="tab" data-tab="semana">Seg–Sex</button>
+    <button class="tab-btn" role="tab" data-tab="sabado">Sábado</button>
+    <button class="tab-btn" role="tab" data-tab="domingo">Domingo</button>
+    <button class="tab-btn" role="tab" data-tab="resumo">Resumo</button>
+  </nav>
+
+  <!-- SEG–SEX -->
+  <section id="semana" class="tab-content" role="tabpanel">
+    <div class="daychips" role="group" aria-label="Escolher o dia">
+      <button class="chip" data-day="1">SEG</button>
+      <button class="chip" data-day="2">TER</button>
+      <button class="chip" data-day="3">QUA</button>
+      <button class="chip" data-day="4">QUI</button>
+      <button class="chip" data-day="5">SEX</button>
+    </div>
+    <p class="caption" id="caption"></p>
+
+    <div class="schedule">
+      <div class="row cat-pessoal"><div class="time">5:30</div><div class="activity">Acordar</div><div class="tag">PES</div></div>
+      <div class="row cat-pessoal" data-start="330" data-end="375"><div class="time">5:30–6:15</div><div class="activity">Higiene + café da manhã</div><div class="tag">PES</div></div>
+      <div class="row cat-pessoal" data-start="375" data-end="440"><div class="time">6:15–7:20</div><div class="activity">Revisão leve<span class="note">Fora das 5h: flashcards de fórmulas e do caderno de erros; 3 questões de Linguagens ou Humanas do ENEM. Ajuste ao trajeto</span></div><div class="tag">PES</div></div>
+      <div class="row cat-colegio" data-start="440" data-end="760"><div class="time">7:20–12:40</div><div class="activity">Colégio</div><div class="tag">COL</div></div>
+      <div class="row cat-refeicao" data-start="760" data-end="810"><div class="time">12:40–13:30</div><div class="activity">Almoço</div><div class="tag">REF</div></div>
+      <div class="row cat-pessoal" data-start="810" data-end="840"><div class="time">13:30–14:00</div><div class="activity">Descanso<span class="note">Preparação para o treino</span></div><div class="tag">PES</div></div>
+      <div class="row cat-treino" data-start="840" data-end="870"><div class="time">14:00–14:30</div><div class="activity">Treino<span class="note">Mantenha pela saúde, pelo foco e pelo sono</span></div><div class="tag">TRE</div></div>
+      <div class="row cat-pessoal" data-start="870" data-end="930"><div class="time">14:30–15:30</div><div class="activity">Banho + lanche<span class="note">Descanso pós-treino</span></div><div class="tag">PES</div></div>
+      <div class="row cat-estudo" data-start="930" data-end="1005" data-block="1"><div class="time">15:30–16:45</div><div class="activity">Bloco 1</div><div class="tag">EST</div></div>
+      <div class="row cat-pausa" data-start="1005" data-end="1020"><div class="time">16:45–17:00</div><div class="activity">Pausa</div><div class="tag">PAU</div></div>
+      <div class="row cat-estudo" data-start="1020" data-end="1095" data-block="2"><div class="time">17:00–18:15</div><div class="activity">Bloco 2</div><div class="tag">EST</div></div>
+      <div class="row cat-refeicao" data-start="1095" data-end="1140"><div class="time">18:15–19:00</div><div class="activity">Jantar<span class="note">Feche o Bloco 2 antes de jantar</span></div><div class="tag">REF</div></div>
+      <div class="row cat-estudo" data-start="1140" data-end="1215" data-block="3"><div class="time">19:00–20:15</div><div class="activity">Bloco 3</div><div class="tag">EST</div></div>
+      <div class="row cat-pausa" data-start="1215" data-end="1230"><div class="time">20:15–20:30</div><div class="activity">Pausa</div><div class="tag">PAU</div></div>
+      <div class="row cat-estudo" data-start="1230" data-end="1305" data-block="4"><div class="time">20:30–21:45</div><div class="activity">Bloco 4</div><div class="tag">EST</div></div>
+      <div class="row cat-pessoal" data-start="1305" data-end="1320"><div class="time">21:45–22:00</div><div class="activity">Rotina noturna<span class="note">Separar material do dia seguinte, telas off</span></div><div class="tag">PES</div></div>
+      <div class="row cat-sono"><div class="time">22:00</div><div class="activity">Dormir<span class="note">≈7h30 de sono</span></div><div class="tag">SON</div></div>
+    </div>
+
+    <h3>Disciplinas por dia</h3>
+    <table class="legend" id="legend-table">
+      <tr><th>Dia</th><th>Blocos 1–2</th><th>Blocos 3–4</th></tr>
+      <tr data-day="1"><td>Segunda</td><td>Mat · Mat</td><td>Fís · Fís</td></tr>
+      <tr data-day="2"><td>Terça</td><td>Quím · Quím</td><td>Mat · Bio</td></tr>
+      <tr data-day="3"><td>Quarta</td><td>Fís · Quím</td><td>Hum · Mat</td></tr>
+      <tr data-day="4"><td>Quinta</td><td>Mat · Fís (rev.)</td><td>Quím · Bio (rev.)</td></tr>
+      <tr data-day="5"><td>Sexta</td><td>Mat · Hum (provas)</td><td>Prioritária · Redação</td></tr>
+    </table>
+    <p class="footnote">Segunda a quarta: conteúdo novo e questões. Quinta é revisão cumulativa em questões, não aula nova. Sexta fecha a semana com provas do ENEM, a Disciplina prioritária (a com mais erros no último simulado) e 1 redação cronometrada.</p>
+  </section>
+
+  <!-- SÁBADO -->
+  <section id="sabado" class="tab-content" role="tabpanel">
+    <div class="schedule">
+      <div class="row cat-pessoal"><div class="time">7:00</div><div class="activity">Acordar</div><div class="tag">PES</div></div>
+      <div class="row cat-pessoal" data-start="420" data-end="450"><div class="time">7:00–7:30</div><div class="activity">Higiene + café</div><div class="tag">PES</div></div>
+      <div class="row cat-estudo" data-start="450" data-end="780"><div class="time">7:30–13:00</div><div class="activity">Simulado ENEM<span class="note">Semana A: Dia 1 — Linguagens + Humanas + redação (5h30)<br>Semana B: Dia 2 — Natureza + Matemática (5h)</span></div><div class="tag">SIM</div></div>
+      <div class="row cat-refeicao" data-start="780" data-end="840"><div class="time">13:00–14:00</div><div class="activity">Almoço</div><div class="tag">REF</div></div>
+      <div class="row cat-pessoal" data-start="840" data-end="1320"><div class="time">Tarde livre</div><div class="activity">Descanso / lazer<span class="note">Treino, se houver nesse dia, família</span></div><div class="tag">PES</div></div>
+      <div class="row cat-sono"><div class="time">≈22:00</div><div class="activity">Dormir<span class="note">≈9h de sono — recupera a semana</span></div><div class="tag">SON</div></div>
+    </div>
+    <p class="footnote">Cronometrado, sem consulta e sem celular, preenchendo o cartão-resposta. Alterne Dia 1 e Dia 2 a cada sábado; a correção fica para o domingo. Perto da prova, mova o simulado para 13h30, o horário real.</p>
+  </section>
+
+  <!-- DOMINGO -->
+  <section id="domingo" class="tab-content" role="tabpanel">
+    <div class="schedule">
+      <div class="row cat-pessoal"><div class="time">7:00</div><div class="activity">Acordar</div><div class="tag">PES</div></div>
+      <div class="row cat-pessoal" data-start="420" data-end="450"><div class="time">7:00–7:30</div><div class="activity">Higiene + café</div><div class="tag">PES</div></div>
+      <div class="row cat-estudo" data-start="450" data-end="525"><div class="time">7:30–8:45</div><div class="activity">Bloco 1 — Correção do simulado<span class="note">Refaça as questões erradas e as que você chutou</span></div><div class="tag">COR</div></div>
+      <div class="row cat-pausa" data-start="525" data-end="540"><div class="time">8:45–9:00</div><div class="activity">Pausa</div><div class="tag">PAU</div></div>
+      <div class="row cat-estudo" data-start="540" data-end="615"><div class="time">9:00–10:15</div><div class="activity">Bloco 2 — Caderno de erros<span class="note">Classifique cada erro: teoria, conta, interpretação ou tempo</span></div><div class="tag">COR</div></div>
+      <div class="row cat-pausa" data-start="615" data-end="630"><div class="time">10:15–10:30</div><div class="activity">Pausa</div><div class="tag">PAU</div></div>
+      <div class="row cat-estudo" data-start="630" data-end="705"><div class="time">10:30–11:45</div><div class="activity">Bloco 3 — Linguagens<span class="note">Interpretação, gramática, literatura e as 5 questões de língua estrangeira</span></div><div class="tag">LIN</div></div>
+      <div class="row cat-pausa" data-start="705" data-end="720"><div class="time">11:45–12:00</div><div class="activity">Pausa</div><div class="tag">PAU</div></div>
+      <div class="row cat-estudo" data-start="720" data-end="795"><div class="time">12:00–13:15</div><div class="activity">Bloco 4 — Redação<span class="note">Reescreva a redação de sexta e monte repertório (livros, filmes, dados)</span></div><div class="tag">RED</div></div>
+      <div class="row cat-refeicao" data-start="795" data-end="840"><div class="time">13:15–14:00</div><div class="activity">Almoço</div><div class="tag">REF</div></div>
+      <div class="row cat-pessoal" data-start="840" data-end="1320"><div class="time">Tarde livre</div><div class="activity">Descanso / lazer<span class="note">A cada 2–3 semanas, classifique cada matéria (verde/amarelo/vermelho)</span></div><div class="tag">PES</div></div>
+      <div class="row cat-sono"><div class="time">22:00</div><div class="activity">Dormir<span class="note">Mantenha esse horário pra começar bem a semana</span></div><div class="tag">SON</div></div>
+    </div>
+    <p class="footnote">A correção fica no domingo para o sábado ser só prova. Erros de todas as áreas entram no mesmo caderno.</p>
+  </section>
+
+  <!-- RESUMO -->
+  <section id="resumo" class="tab-content" role="tabpanel">
+    <h3 class="first">Horas na semana · 35h</h3>
+    <div class="bar" role="img" aria-label="Distribuição das 35 horas: Matemática 7h30, Física 5h, Química 5h, Biologia 2h30, Humanas 2h30, Linguagens e redação 3h45, Disciplina prioritária 1h15, simulado e correção 7h30">
+      <span style="flex: 450; background: var(--s-mat)"></span><span style="flex: 300; background: var(--s-fis)"></span><span style="flex: 300; background: var(--s-qui)"></span><span style="flex: 150; background: var(--s-bio)"></span><span style="flex: 150; background: var(--s-hum)"></span><span style="flex: 225; background: var(--s-lin)"></span><span style="flex: 75; background: var(--s-pri)"></span><span style="flex: 450; background: var(--s-sim)"></span>
+    </div>
+    <table class="legend">
+      <tr><th>Frente</th><th>Horas</th><th>Quando</th></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-mat)"></i>Matemática</td><td class="num">7h30</td><td>Seg · Ter · Qua · Qui · Sex</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-fis)"></i>Física</td><td class="num">5h</td><td>Seg · Qua · Qui</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-qui)"></i>Química</td><td class="num">5h</td><td>Ter · Qua · Qui</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-bio)"></i>Biologia</td><td class="num">2h30</td><td>Ter · Qui</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-hum)"></i>Humanas</td><td class="num">2h30</td><td>Qua · Sex</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-lin)"></i>Linguagens + redação</td><td class="num">3h45</td><td>Sex · Dom</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-pri)"></i>Disciplina prioritária</td><td class="num">1h15</td><td>Sex</td></tr>
+      <tr><td><i class="dot" style="--dot: var(--s-sim)"></i>Simulado + correção</td><td class="num">7h30</td><td>Sáb 5h · Dom 2h30</td></tr>
+    </table>
+    <p class="footnote">O simulado mistura todas as áreas do dia; o Dia 1 dura 5h30, 30 min a mais que o previsto na tabela. A "Revisão leve" da manhã (3 questões de Linguagens ou Humanas) fica fora das 35h.</p>
+
+    <h3>O que o ENEM cobra</h3>
+    <ul class="facts">
+      <li><b>Datas.</b> Domingos 8 e 15/11/2026, prova às 13h30; os portões fecham às 13h. Dia 1: Linguagens (45) + Humanas (45) + redação, 5h30. Dia 2: Natureza (45) + Matemática (45), 5h.</li>
+      <li><b>Ritmo.</b> ~3 min por questão. A nota usa TRI: acertar as fáceis vale mais que chutar as difíceis, e nenhuma fica em branco.</li>
+      <li><b>Redação.</b> 5 competências de 200 pontos (máx. 1000). Meta competitiva: 880+.</li>
+      <li><b>Meta para Eng. Química.</b> Cortes de ampla concorrência em ~720–770 (UFC ~722 na parcial do SiSU 2026; UFMG ~767, ref. 2025). Referência: média ≥ 750, algo como 38 acertos em Matemática, 35 em Natureza, 37 em Linguagens e 38 em Humanas (aprox.). Engenharias costumam pesar mais Matemática e Natureza: veja os pesos no edital.</li>
+    </ul>
+    <p class="footnote">Datas e horários conforme o edital do ENEM 2026. Os cortes mudam a cada ano: confira o edital da universidade-alvo.</p>
+
+    <h3>Reta final até o ENEM</h3>
+    <ul class="facts">
+      <li><b>Sem conteúdo novo.</b> Só ENEM antigos por área e revisão do caderno de erros.</li>
+      <li><b>Sáb 31/10:</b> simulado completo do Dia 1, às 13h30. <b>9–14/11:</b> só Matemática e Natureza, para o Dia 2.</li>
+      <li><b>Véspera:</b> descanso, documento e caneta preta separados, sono às 22h.</li>
+    </ul>
+  </section>
+
+  <section class="tips">
+    <h2>Para virar hábito</h2>
+    <ul>
+      <li><b>Mínimo inegociável.</b> Blocos 1–2 em todo dia útil; 3–4 são bônus. Nunca dois dias seguidos sem estudar.</li>
+      <li><b>Simulado é treino de prova.</b> ~3 min por questão: treine decidir quando pular e voltar depois.</li>
+      <li><b>Nível certo.</b> ENEM antigos primeiro, depois vestibulares de públicas. IME/ITA só como 1 questão-desafio por semana.</li>
+      <li><b>Caderno de erros.</b> Anote a causa de cada erro (teoria, conta, interpretação ou tempo) e releia no domingo — é ele que define a Disciplina prioritária.</li>
+      <li><b>Redação toda semana.</b> Sem prática semanal a nota não sobe: peça correção pelas 5 competências.</li>
+      <li><b>Proteja o sono e o treino.</b> 22h garante ~7h30 de sono; sábado à tarde é a válvula de escape.</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+  (function () {
+    var T = "Teoria ativa + exemplos resolvidos";
+    var Q = "Questões do ENEM por tema, ~3 min cada, resolvendo por escrito";
+    var R = "Refaça os erros da semana + resumo de 1 página";
+    var P = "Questões de provas anteriores do ENEM, cronometradas";
+    var TQ = T + " + questões do ENEM";
+
+    var PLAN = {
+      1: { name: "Segunda", text: "conteúdo novo de Matemática e Física.", blocks: [
+        ["MAT", "Matemática", T], ["MAT", "Matemática", Q],
+        ["FÍS", "Física", T], ["FÍS", "Física", Q] ] },
+      2: { name: "Terça", text: "conteúdo novo de Química, mais Matemática e Biologia.", blocks: [
+        ["QUÍ", "Química", T], ["QUÍ", "Química", Q],
+        ["MAT", "Matemática", Q], ["BIO", "Biologia", TQ] ] },
+      3: { name: "Quarta", text: "Física e Química em questões, Humanas e Matemática.", blocks: [
+        ["FÍS", "Física", Q], ["QUÍ", "Química", Q],
+        ["HUM", "Humanas", TQ], ["MAT", "Matemática", T] ] },
+      4: { name: "Quinta", text: "revisão cumulativa em modo questões — não é aula nova.", blocks: [
+        ["MAT", "Matemática", R], ["FÍS", "Física", R],
+        ["QUÍ", "Química", R], ["BIO", "Biologia", R] ] },
+      5: { name: "Sexta", text: "fechamento da semana — provas do ENEM, Disciplina prioritária e redação.", blocks: [
+        ["MAT", "Matemática", P], ["HUM", "Humanas", P],
+        ["PRI", "Disciplina prioritária", "A matéria com mais erros no último simulado"],
+        ["RED", "Redação", "1 redação cronometrada (60 min) + 15 min corrigindo pelas 5 competências"] ] }
+    };
+
+    var DAY_NAMES = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+
+    var tabs = document.querySelectorAll(".tab-btn");
+    var contents = document.querySelectorAll(".tab-content");
+    var chips = document.querySelectorAll(".chip");
+    var blockRows = document.querySelectorAll("#semana .row[data-block]");
+    var caption = document.getElementById("caption");
+    var selDay = 1;
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function todaySectionId() {
+      var day = new Date().getDay();
+      if (day === 6) return "sabado";
+      if (day === 0) return "domingo";
+      return "semana";
+    }
+
+    function updateClock() {
+      var d = new Date();
+      document.getElementById("clock").textContent = pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+    }
+
+    function updateNow() {
+      document.querySelectorAll(".row.is-now").forEach(function (r) { r.classList.remove("is-now"); });
+      var now = new Date();
+      var nowMin = now.getHours() * 60 + now.getMinutes();
+      var sectionId = todaySectionId();
+      if (sectionId === "semana" && selDay !== now.getDay()) return;
+      document.querySelectorAll("#" + sectionId + " .row[data-start]").forEach(function (row) {
+        var s = parseInt(row.dataset.start, 10);
+        var e = parseInt(row.dataset.end, 10);
+        if (nowMin >= s && nowMin < e) row.classList.add("is-now");
+      });
+    }
+
+    function showTab(id) {
+      tabs.forEach(function (t) {
+        var on = t.dataset.tab === id;
+        t.classList.toggle("active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      contents.forEach(function (c) { c.classList.toggle("active", c.id === id); });
+    }
+
+    function renderDay(d) {
+      selDay = d;
+      var plan = PLAN[d];
+      chips.forEach(function (c) {
+        var on = parseInt(c.dataset.day, 10) === d;
+        c.classList.toggle("active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      caption.innerHTML = "<b>" + plan.name + ":</b> " + plan.text;
+      blockRows.forEach(function (row) {
+        var i = parseInt(row.dataset.block, 10) - 1;
+        var b = plan.blocks[i];
+        row.querySelector(".activity").innerHTML = "Bloco " + (i + 1) + " — " + b[1] + '<span class="note">' + b[2] + "</span>";
+        row.querySelector(".tag").textContent = b[0];
+      });
+      document.querySelectorAll("#legend-table tr[data-day]").forEach(function (tr) {
+        tr.classList.toggle("sel", parseInt(tr.dataset.day, 10) === d);
+      });
+      updateNow();
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener("click", function () { showTab(t.dataset.tab); });
+    });
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () { renderDay(parseInt(c.dataset.day, 10)); });
+    });
+
+    var lastDay = -1;
+    function syncToday() {
+      var d = new Date().getDay();
+      document.getElementById("day-label").textContent = DAY_NAMES[d];
+      chips.forEach(function (c) {
+        c.classList.toggle("today", parseInt(c.dataset.day, 10) === d);
+      });
+      if (d !== lastDay) {
+        lastDay = d;
+        renderDay(d >= 1 && d <= 5 ? d : 1);
+        showTab(todaySectionId());
+      }
+      updateClock();
+      updateNow();
+    }
+
+    syncToday();
+    setInterval(updateClock, 1000);
+    setInterval(syncToday, 30000);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) syncToday();
+    });
+
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
+
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        var nowRow = document.querySelector(".tab-content.active .row.is-now");
+        if (nowRow) {
+          var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          nowRow.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+        }
+      }, 400);
+    });
+  })();
+</script>
+</body>
+</html>
